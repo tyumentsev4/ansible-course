@@ -1,9 +1,8 @@
+# Сценарий работает только для управляемых серверов с python3
+# т.к. модуль cryptography требует этого
+# Centos 7 не заработал
+# Поэтому использовался Centos 9 stream minimal
 # ansible-galaxy collection install community.crypto
-# pip install cryptography
-
-# Попал в ловушку community.crypto требует cryptography.py, который
-# требует python3; yum не работает из python3 нужно использовать dnf
-# который не установить без yum
 ---
 - name: configure webserver with tls
   hosts: nodes3
