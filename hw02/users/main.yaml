@@ -2,13 +2,13 @@
 ---
 - name: add users to remote host
   hosts: nodes
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - users.yaml
   tasks:
     - name: add user
       become: true
-      ansible.builtin.user:
+      user:
         name: "{{ user.name }}"
         comment: Ansible-generated user
         password: "{{ user.password | password_hash('sha512') }}"
