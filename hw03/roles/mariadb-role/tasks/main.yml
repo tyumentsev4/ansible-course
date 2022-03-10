@@ -1,2 +1,26 @@
 ---
 # tasks file for mariadb-role
+- name: Install 'mariadb-server' and 'MySQL-python' packages
+  yum:
+    name:
+      - mariadb-server
+      - MySQL-python
+
+- name: Ensure 'mariadb' service is started and enabled
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Create "{{ db_name }}" database
+  mysql_db:
+    name: "{{ db_name }}"
+
+- name: >
+    Create database user "{{ db_user }}" with "{{ db_password }}"
+    and "{{ db_name }}".*:ALL privelege
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    priv: "{{ db_name }}.*:ALL"
+  no_log: true

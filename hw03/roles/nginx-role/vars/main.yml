@@ -1,2 +1,4 @@
 ---
 # vars file for nginx-role
+nginx_port_no_tls: 80
+nginx_port_tls: 443

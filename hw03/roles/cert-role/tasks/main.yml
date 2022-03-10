@@ -1,2 +1,39 @@
 ---
 # tasks file for cert-role
+- name: install cryptography.py selinux.py
+  become: false
+  local_action:
+    module: pip
+    name:
+      - cryptography
+      - selinux
+
+- name: Create a ssl-directory if it does not exist
+  ansible.builtin.file:
+    path: "files/ssl"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  connection: local
+
+- name: Create private key (RSA, 4096 bits)
+  local_action:
+    module: community.crypto.openssl_privatekey
+    path: "files/ssl/{{ ansible_host }}.key"
+    mode: 0644
+
+- name: Generate an OpenSSL Certificate Signing Request
+  local_action:
+    module: community.crypto.openssl_csr
+    path: "files/ssl/{{ ansible_host }}.csr"
+    privatekey_path: "files/ssl/{{ ansible_host }}.key"
+    common_name: "{{ansible_host}}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  local_action:
+    module: community.crypto.x509_certificate
+    path: "files/ssl/{{ ansible_host }}.crt"
+    privatekey_path: "files/ssl/{{ ansible_host }}.key"
+    csr_path: "files/ssl/{{ ansible_host }}.csr"
+    provider: selfsigned
