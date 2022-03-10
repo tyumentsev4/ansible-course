@@ -1,6 +1,6 @@
 ---
 # tasks file for nginx-role
-- name: create nginx repo definition
+- name: Create nginx repo definition
   copy:
     src: nginx.repo
     dest: /etc/yum.repos.d/nginx.repo
@@ -8,13 +8,13 @@
     group: root
     mode: 0644
 
-- name: install nginx
+- name: Install nginx
   yum:
     name: nginx
     update_cache: true
     state: present
 
-- name: copy main nginx config file
+- name: Copy main nginx config file
   copy:
     src: files/nginx.conf
     dest: /etc/nginx/nginx.conf
@@ -23,7 +23,7 @@
     mode: 0644
   notify: restart nginx
 
-- name: copy site's nginx config file
+- name: Copy site's nginx config file
   template:
     src: templates/nginx.conf.j2
     dest: /etc/nginx/conf.d/notls.conf
@@ -32,7 +32,7 @@
     mode: 0644
   notify: restart nginx
 
-- name: copy ssl
+- name: Copy ssl
   copy:
     src: files/ssl
     dest: /etc/nginx
@@ -41,7 +41,7 @@
     mode: 0644
   notify: restart nginx
 
-- name: copy index.html
+- name: Copy index.html
   template:
     src: templates/index.html.j2
     dest: /usr/share/nginx/html/index.html
@@ -50,7 +50,7 @@
     mode: 0644
   notify: restart nginx
 
-- name: ensure nginx is enabled and started
+- name: Ensure nginx is enabled and started
   service:
     name: nginx
     state: started
@@ -60,7 +60,7 @@
   service_facts:
   register: service_facts_list
 
-- name: insert firewalld rule for nginx-http
+- name: Insert firewalld rule for nginx-http
   firewalld:
     port: "{{ nginx_port_no_tls }}/tcp"
     permanent: true
@@ -68,7 +68,7 @@
     immediate: true
   when: service_facts_list.ansible_facts.services["firewalld.service"].state == "running"
 
-- name: insert firewalld rule for nginx-https
+- name: Insert firewalld rule for nginx-https
   firewalld:
     port: "{{ nginx_port_tls }}/tcp"
     permanent: true

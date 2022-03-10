@@ -1,31 +1,46 @@
 ---
-- name: setup nginx with ssl and mariadb
+- name: Setup nginx with SSL and mariadb
   hosts: nodes
   become: true
   tasks:
-    - name: ssl setup
-      import_role:
-        name: cert-role
-      tags:
-        - cert
+    - name: Setup nginx server with tls
+      block:
+        - name: SSL setup
+          import_role:
+            name: cert-role
 
-    - name: nginx setup
-      import_role:
-        name: nginx-role
+        - name: Nginx setup
+          import_role:
+            name: nginx-role
       tags:
         - nginx
 
-    - name: mariadb setup
+    - name: Mariadb setup
       import_role:
         name: mariadb-role
       tags:
         - mariadb
 
   post_tasks:
-    - name: check web site-http from control server
-      uri:
-        url: "http://{{ ansible_host }}:{{ nginx_port_no_tls }}"
-        return_content: true
-      connection: local
-      register: example_webpage_out
-      failed_when: example_webpage_out.status != 200
+    - name: Check web site from control server
+      block:
+        - name: Check http
+          uri:
+            url: "http://{{ ansible_host }}:{{ nginx_port_no_tls }}"
+            return_content: true
+          connection: local
+          register: example_webpage_out
+          failed_when: example_webpage_out.status != 200
+          tags:
+            - nginx
+
+        - name: Check https
+          uri:
+            url: "https://{{ ansible_host }}:{{ nginx_port_tls }}"
+            return_content: true
+            validate_certs: false
+          connection: local
+          register: example_webpage_out
+          failed_when: example_webpage_out.status != 200
+      tags:
+        - nginx

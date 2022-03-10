@@ -1,6 +1,6 @@
 ---
 # tasks file for cert-role
-- name: install cryptography.py selinux.py
+- name: Install cryptography.py selinux.py
   become: false
   local_action:
     module: pip
