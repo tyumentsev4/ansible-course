@@ -21,7 +21,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Copy site's nginx config file
   template:
@@ -30,7 +30,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Copy ssl
   copy:
@@ -39,7 +39,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Copy index.html
   template:
@@ -48,7 +48,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Ensure nginx is enabled and started
   service:
