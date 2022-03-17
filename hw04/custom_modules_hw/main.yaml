@@ -1,0 +1,46 @@
+---
+- name: Check site's availability
+  hosts: nodes
+  gather_facts: false
+  tasks:
+    # - name: install epel-release for repos with python2-pip
+    #   become: true
+    #   yum:
+    #     name:
+    #       - epel-release
+    #     state: present
+
+    # - name: install python2-pip
+    #   become: true
+    #   yum:
+    #     name:
+    #       - python2-pip
+    #     state: present
+    #     update_cache: true
+
+    # - name: install requests
+    #   become: true
+    #   pip:
+    #     executable: /usr/bin/pip2
+    #     name:
+    #       - requests
+
+    # - name: healthcheck
+    #   healthcheck_py:
+    #     addr: "google.com"
+    #     tls: true
+    #   register: check_result
+
+    # - name: print result
+    #   debug:
+    #     msg: "{{ check_result }}"
+
+    - name: healthcheck_sh
+      healthcheck_sh.sh:
+        addr: "google.com"
+        tls: false
+      register: check_result
+
+    - name: print result
+      debug:
+        msg: "{{ check_result }}"

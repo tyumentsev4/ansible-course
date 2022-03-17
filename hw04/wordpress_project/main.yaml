@@ -1,0 +1,53 @@
+---
+- name: install php-fpm packages and wordpress
+  vars_files:
+    - vars/main.yaml
+  tasks:
+    - name: Copy nginx configuration from template for wordpress
+
+    - name: Put repo files to /etc/yum.repos.d/ directory
+
+    - name: Install packages from 'php_packages_list'
+
+    - name: Remove default /etc/php-fpm.d/www.conf file
+
+    - name: Copy wordpress.conf from files to /etc/php-fpm.d/wordpress.conf
+
+    - name: >
+        Download WordPress from http://wordpress.org/wordpress-{{ wp_version }}.tar.gz
+        to /srv/ folder + checksum
+      get_url:
+
+    - name: Unarchive wordpress to /srv folder
+      unarchive:
+
+    - name: Add linux group "wordpress"
+      group:
+
+    - name: >
+        Add linux user "wordpress" with group "wordpress"
+        and /srv/wordpress as homedir
+      user:
+
+    - name: Create mariadb database for wordpress
+      mysql_db:
+
+    - name: Create WordPress database user
+      mysql_user:
+
+    - name: >
+        Copy WordPress config file from templates
+        to /srv/wordpress/wp-config.php
+
+    - name: >
+        /srv/wordpress directory recursive rights
+        for wordpress user and group
+      file:
+
+    - name: Start php-fpm Service
+
+  handlers:
+    - name: restart php-fpm
+
+    - name: restart nginx
+
