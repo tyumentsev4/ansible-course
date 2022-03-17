@@ -13,6 +13,7 @@
     src: "/srv/wordpress.tar.gz"
     dest: "/srv"
     remote_src: true
+    mode: 0750
 
 - name: Add linux group "wordpress"
   group:
@@ -26,19 +27,26 @@
     group: wordpress
     home: /srv/wordpress
 
+- name: Add nginx user to wordpress group
+  user:
+    name: nginx
+    append: true
+    groups: wordpress
+
 - name: >
     Copy WordPress config file from templates
     to /srv/wordpress/wp-config.php
   template:
     src: templates/wp-config.php
     dest: /srv/wordpress/wp-config.php
+    mode: 0750
 
 - name: >
     /srv/wordpress directory recursive rights
     for wordpress user and group
   file:
+    state: directory
     path: /srv/wordpress
     owner: wordpress
     group: wordpress
     recurse: true
-    mode: 0644

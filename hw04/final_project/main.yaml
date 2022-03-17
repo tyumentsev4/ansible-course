@@ -30,25 +30,11 @@
         name: php-role
 
   post_tasks:
-    - name: Check web site from control server
-      block:
-        - name: Check http
-          uri:
-            url: "http://{{ ansible_host }}:{{ nginx_no_tls_port }}"
-            return_content: true
-          connection: local
-          register: example_webpage_out
-          failed_when: example_webpage_out.status != 200
-          tags:
-            - nginx
-
-        - name: Check https
-          uri:
-            url: "https://{{ ansible_host }}:{{ nginx_tls_port }}"
-            return_content: true
-            validate_certs: false
-          connection: local
-          register: example_webpage_out
-          failed_when: example_webpage_out.status != 200
-      tags:
-        - nginx
+    - name: Check https
+      uri:
+        url: "https://{{ ansible_host }}:{{ nginx_tls_port }}"
+        return_content: true
+        validate_certs: false
+      connection: local
+      register: example_webpage_out
+      failed_when: example_webpage_out.status != 200

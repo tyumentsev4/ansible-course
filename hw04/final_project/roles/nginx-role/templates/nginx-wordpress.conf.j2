@@ -1,5 +1,5 @@
 server {
-        listen       {{ nginx_tls_port }} ssl http2 default_server;
+        listen       {{ nginx_tls_port }} ssl http2;
         server_name  {{ server_hostname }};
         root /srv/wordpress/ ;
 
@@ -36,7 +36,7 @@ server {
 }
 
 server {
-        listen {{ nginx_no_tls_port }} default_server;
+        listen {{ nginx_no_tls_port }};
         server_name {{ server_hostname }};
         return 301 https://{{ server_hostname }}$request_uri;
 }
