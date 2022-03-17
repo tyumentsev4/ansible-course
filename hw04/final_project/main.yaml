@@ -7,27 +7,27 @@
       block:
         - name: SSL setup
           import_role:
-            name: cert-role
+            name: cert_role
 
         - name: Nginx setup
           import_role:
-            name: nginx-role
+            name: nginx_role
       tags:
         - nginx
 
     - name: Mariadb setup
       import_role:
-        name: mariadb-role
+        name: mariadb_role
       tags:
         - mariadb
 
     - name: Wordpress setup
       import_role:
-        name: wordpress-role
+        name: wordpress_role
 
     - name: Php setup
       import_role:
-        name: php-role
+        name: php_role
 
   post_tasks:
     - name: Check https
