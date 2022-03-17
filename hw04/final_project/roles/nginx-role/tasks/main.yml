@@ -1,0 +1,68 @@
+---
+# tasks file for nginx-role
+- name: Create nginx repo definition
+  copy:
+    src: nginx.repo
+    dest: /etc/yum.repos.d/nginx.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install nginx
+  yum:
+    name: nginx
+    update_cache: true
+    state: present
+
+- name: Copy main nginx config file
+  copy:
+    src: files/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+
+- name: Copy nginx configuration from template for wordpress
+  template:
+    src: templates/nginx-wordpress.conf.j2
+    dest: /etc/nginx/conf.d/nginx-wordpress.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+
+- name: Copy ssl
+  copy:
+    src: files/ssl
+    dest: /etc/nginx
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+
+- name: Ensure nginx is enabled and started
+  service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Populate service facts
+  service_facts:
+  register: service_facts_list
+
+- name: Insert firewalld rule for nginx-http
+  firewalld:
+    port: "{{ nginx_no_tls_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  when: service_facts_list.ansible_facts.services["firewalld.service"].state == "running"
+
+- name: Insert firewalld rule for nginx-https
+  firewalld:
+    port: "{{ nginx_tls_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  when: service_facts_list.ansible_facts.services["firewalld.service"].state == "running"

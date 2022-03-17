@@ -1,0 +1,37 @@
+---
+# tasks file for php-role
+- name: Put repo files to /etc/yum.repos.d/ directory
+  copy:
+    src: "files/{{ item }}"
+    dest: /etc/yum.repos.d/
+    owner: root
+    group: root
+    mode: 0644
+
+  with_items:
+    - epel.repo
+    - remi-php74.repo
+    - remi-safe.repo
+
+- name: Install packages from 'php_packages_list'
+  yum:
+    name: "{{ php_packages_list }}"
+
+- name: Remove default /etc/php-fpm.d/www.conf file
+  file:
+    path: /etc/php-fpm.d/www.conf
+    state: absent
+
+- name: Copy wordpress.conf from files to /etc/php-fpm.d/wordpress.conf
+  copy:
+    src: files/wordpress.conf
+    dest: /etc/php-fpm.d/wordpress.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start php-fpm Service
+  service:
+    name: php-fpm
+    state: started
+    enabled: true

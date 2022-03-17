@@ -19,6 +19,7 @@ php_packages_list:
 nginx_tls_port: 443
 nginx_no_tls_port: 80
 server_hostname: ansible-node1.localdomain
+# server_hostname: controlled
 
 # wordpress version and checksum for this version
 # you can choose another at https://wordpress.org/download/releases/
@@ -29,3 +30,8 @@ wp_checksum: sha1:c3b1b59553eafbf301c83b14c5eeae4cf1c86044
 wp_db_name: wordpress_db
 wp_db_user: wordpress_user
 wp_db_password: wordpress_password
+
+#temp vars
+
+cert_path: /etc/nginx/ssl/cert.crt
+privatekey_path: /etc/nginx/ssl/pk.key
