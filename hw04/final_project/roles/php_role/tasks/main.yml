@@ -1,5 +1,5 @@
 ---
-# tasks file for php-role
+# tasks file for php_role
 - name: Put repo files to /etc/yum.repos.d/ directory
   copy:
     src: "files/{{ item }}"

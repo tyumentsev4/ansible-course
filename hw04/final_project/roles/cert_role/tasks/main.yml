@@ -1,9 +1,9 @@
 ---
-# tasks file for cert-role
+# tasks file for cert_role
 - name: Install cryptography.py selinux.py
   become: false
-  local_action:
-    module: pip
+  delegate_to: localhost
+  pip:
     name:
       - cryptography
       - selinux
@@ -18,21 +18,21 @@
   connection: local
 
 - name: Create private key (RSA, 4096 bits)
-  local_action:
-    module: community.crypto.openssl_privatekey
+  delegate_to: localhost
+  community.crypto.openssl_privatekey:
     path: "files/ssl/{{ ansible_host }}.key"
     mode: 0644
 
 - name: Generate an OpenSSL Certificate Signing Request
-  local_action:
-    module: community.crypto.openssl_csr
+  delegate_to: localhost
+  community.crypto.openssl_csr:
     path: "files/ssl/{{ ansible_host }}.csr"
     privatekey_path: "files/ssl/{{ ansible_host }}.key"
-    common_name: "{{ansible_host}}"
+    common_name: "{{ ansible_host }}"
 
 - name: Generate a Self Signed OpenSSL certificate
-  local_action:
-    module: community.crypto.x509_certificate
+  delegate_to: localhost
+  community.crypto.x509_certificate:
     path: "files/ssl/{{ ansible_host }}.crt"
     privatekey_path: "files/ssl/{{ ansible_host }}.key"
     csr_path: "files/ssl/{{ ansible_host }}.csr"

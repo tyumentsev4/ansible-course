@@ -1,5 +1,5 @@
 ---
-# tasks file for mariadb-role
+# tasks file for mariadb_role
 - name: Install 'mariadb-server' and 'MySQL-python' packages
   yum:
     name:

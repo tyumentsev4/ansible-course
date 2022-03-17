@@ -1,5 +1,5 @@
 ---
-# vars file for php-role
+# vars file for php_role
 php_packages_list:
   - php
   - php-curl

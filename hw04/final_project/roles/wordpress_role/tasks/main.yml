@@ -1,5 +1,5 @@
 ---
-# tasks file for wordpress-role
+# tasks file for wordpress_role
 - name: >
     Download WordPress from http://wordpress.org/wordpress-{{ wp_version }}.tar.gz
     to /srv/ folder + checksum

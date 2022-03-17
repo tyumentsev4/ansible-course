@@ -1,5 +1,5 @@
 ---
-# vars file for nginx-role
+# vars file for nginx_role
 nginx_tls_port: 443
 nginx_no_tls_port: 80
 server_hostname: ansible-node1.localdomain
