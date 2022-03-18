@@ -8,12 +8,12 @@
     mac2: 00C9DEF21521
     mac3: 01caDEF29501
   tasks:
-    - name: mac filter
+    - name: mac filter test1
       debug:
         msg: "{{ mac1 | mac_filter }}"
-    - name: mac filter
+    - name: mac filter test2
       debug:
         msg: "{{ mac2 | mac_filter }}"
-    - name: mac filter
+    - name: mac filter test3
       debug:
         msg: "{{ mac3 | mac_filter }}"

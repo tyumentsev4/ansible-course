@@ -12,7 +12,8 @@ def mac_filter(mac: str) -> str:
         raise AnsibleFilterTypeError("String type is expected, "
                                      "got type %s instead" % type(mac))
 
-    regex = r"^([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})([0-9A-Fa-f]{2})$"
+    regex = r"^([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$"
+    mac = mac.upper()
     match = re.match(regex, mac)
     if match is None:
         raise AnsibleFilterTypeError("Expected hex string of length 12 ")
