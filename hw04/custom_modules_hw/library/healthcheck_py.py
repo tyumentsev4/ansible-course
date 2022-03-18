@@ -62,16 +62,21 @@ rc:
 
 def check_site(addr, tls):
     failed = False
-    if tls:
-        r = requests.get("https://%s" % addr, verify=False)
-    else:
-        r = requests.get("http://%s" % addr)
-    rc = r.status_code
+    r = requests.Request()
+    try:
+        if tls:
+            r = requests.get("https://%s" % addr, verify=False)
+        else:
+            r = requests.get("http://%s" % addr)
+    except requests.exceptions.RequestException:
+        return (True, "ConnectionError", "Not Available", 1)
 
+    rc = r.status_code
     if rc == 200:
         site_status = "Available"
     else:
         site_status = "Not available"
+        failed = True
 
     msg = ""
     return (failed, msg, site_status, rc)

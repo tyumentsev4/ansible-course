@@ -13,7 +13,7 @@ fi
 
 if [ "$status_code" -eq "200" ]
 then
-    echo "{\"failed\": false, \"rc\": \"$status_code\", \"site_status\": \"Available\"}"
+    echo "{\"failed\": false, \"rc\": \"$status_code\", \"site_status\": \"Available\", \"msg\": \"\"}"
 else
-    echo "{\"failed\": true, \"msg\": \"Not available\"}"
+    echo "{\"failed\": true, \"site_status\": \"Not available\"}"
 fi
