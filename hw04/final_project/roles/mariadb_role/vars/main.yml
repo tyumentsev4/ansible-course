@@ -1,5 +1,2 @@
 ---
 # vars file for mariadb_role
-wp_db_name: wordpress_db
-wp_db_user: wordpress_user
-wp_db_password: wordpress_password
